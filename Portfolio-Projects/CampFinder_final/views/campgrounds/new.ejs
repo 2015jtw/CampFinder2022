@@ -4,23 +4,32 @@
     <h1 class="text-center">New Campground</h1>
 
     <div class="col-6 offset-3">
-        <form action="/campgrounds" method="POST">
+        <form action="/campgrounds" method="POST" novalidate class="validated-form">
             <!-- campground title -->
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="campground[title]">
+                <input class="form-control" type="text" id="title" name="campground[title]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
             </div>
             <!-- campground location -->
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="campground[location]">
+                <input class="form-control" type="text" id="location" name="campground[location]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
             </div>
             <!-- campground price -->
             <div class="mb-3">
                 <label class="form-label" for="price">Price</label>
                 <div class="input-group">
                     <span class="input-group-text" id="basic-addon1">$</span>
-                    <input class="form-control" type="number" id="price" name="campground[price]" placeholder="0.00">
+                    <input class="form-control" type="number" id="price" name="campground[price]" placeholder="0.00" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
             </div>
 
@@ -29,12 +38,18 @@
             <!-- campground image -->
             <div class="mb-3">
                 <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="campground[image]">
+                <input class="form-control" type="text" id="image" name="campground[image]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>                
             </div>
              <!-- campground description -->
              <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="campground[description]"> </textarea>
+                <textarea class="form-control" type="text" id="description" name="campground[description]" required></textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
             </div>
 
             <button class="btn btn-success mb-3">Add Campground</button>
