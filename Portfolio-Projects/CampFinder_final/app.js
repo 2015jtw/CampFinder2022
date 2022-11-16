@@ -17,8 +17,18 @@ const wrapAsync = require('./utils/wrapAsync');
 const ExpressError = require('./utils/ExpressError')
 
 // routes
-const campgrounds = require('./routes/campgrounds')
-const reviews = require('./routes/reviews')
+const campgroundRoutes = require('./routes/campgrounds')
+const reviewRoutes = require('./routes/reviews')
+const userRoutes = require('./routes/users');
+
+// authentication
+const passport = require('passport');
+const localStrategy = require('passport-local');
+const User = require('./models/user');
+const { FORMERR } = require('dns');
+const { use } = require('passport');
+const user = require('./models/user');
+
 
 mongoose.connect("mongodb://localhost:27017/camp-finder");
 
@@ -49,9 +59,19 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+
+// session and flash
 app.use(session(sessionConfig))
 app.use(flash());
- 
+
+// authentication
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 // flash middleware
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
@@ -60,10 +80,11 @@ app.use((req, res, next) => {
 })
 
 
-
 // refactoring routes
-app.use("/campgrounds", campgrounds);
-app.use("/campgrounds/:id/reviews", reviews);
+app.use("/", userRoutes);
+app.use("/campgrounds", campgroundRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes);
+
 
 
 // home page
