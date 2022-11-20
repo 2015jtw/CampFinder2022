@@ -7,6 +7,8 @@ const Joi = require('joi');
 const {campgroundSchema, reviewSchema} = require('../schemas')
 const {isLoggedIn, isAuthor, validateCampground} = require('../middleware');
 
+
+
 // view main campground page INDEX PAGE
 router.get('/', wrapAsync(async (req, res) => {
     const campgrounds = await Campground.find({});
@@ -30,7 +32,9 @@ router.post('/', isLoggedIn, validateCampground, wrapAsync(async(req, res, next)
 
 // view individual campground page SHOW PAGE
 router.get('/:id', wrapAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews').populate('author');
+    const campground = await Campground.findById(req.params.id).populate({path: 'reviews', 
+    populate: {path: 'author'}}).populate('author');
+    
     if(!campground){
         req.flash('error', 'Campground not found.')
         res.redirect('/campgrounds');
