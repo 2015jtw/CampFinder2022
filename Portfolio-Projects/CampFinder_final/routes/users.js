@@ -4,47 +4,19 @@ const User = require('../models/user');
 const wrapAsync = require('../utils/wrapAsync');
 const passport = require('passport');
 
+// import controllers
+const reviews = require('../controllers/users');
 
-router.get('/register', (req, res) => {
-    res.render('users/register')
-})
 
-router.post('/register', wrapAsync(async(req, res) => {
-    try{
-        const {email, username, password } = req.body;
-        const user = new User({email, username});
-        const registeredUser = await User.register(user, password);
-        req.login(registeredUser, err => {
-            if(err){
-                return next(err); 
-            }
-            req.flash('success', 'Welcome to Campfinder');
-            res.redirect('/campgrounds');
-        })
-        
-    }
-    catch(e){
-        req.flash('error', e.message);
-        res.redirect('register')
-    }
-}) )
+router.get('/register', reviews.renderRegister)
 
-router.get('/login', (req, res) => {
-    res.render('users/login')
-})
+router.post('/register', wrapAsync(reviews.register));
 
-router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res) => {
-    req.flash('success', "Logged in");
-    const redirectUrl = req.session.returnTo || '/campgrounds';
-    delete req.session.returnTo;
-    res.redirect(redirectUrl);
-})
+router.get('/login', reviews.renderLogin);
 
-router.get('/logout', (req, res, next) => {
-    req.logout();
-   req.flash('success', 'Logged out');
-   res.redirect('/campgrounds');
-  }); 
+router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), reviews.login)
+
+router.get('/logout', reviews.logout); 
   
 module.exports = router;
 
