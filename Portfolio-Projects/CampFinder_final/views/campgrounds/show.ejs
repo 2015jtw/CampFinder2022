@@ -2,6 +2,7 @@
 
 <link rel="stylesheet" href="/css/stars.css">
 
+
 <div class="row">
     <div class="col-6">
 
@@ -55,6 +56,10 @@
     </div>
 
     <div class="col-6">
+
+       <!-- mapbox div -->
+       <div id='map' style='width: 400px; height: 300px; margin-bottom: 1rem; margin-left: 5rem;' class="d-flex justify-content-center"></div>
+
       <!-- create a review form -->
       <% if(currentUser){ %> 
       <h2>Leave a Review</h2>
@@ -106,8 +111,11 @@
     </div>
 </div>
 
+  
 
+<script>
+  const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+  const campground = <%- JSON.stringify(campground) %>
+</script>
 
-
-    
-      
+<script src="/showPageMap.js"></script>
